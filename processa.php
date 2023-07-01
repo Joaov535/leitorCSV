@@ -1,47 +1,44 @@
-<?php 
+<?php
 
-require './models/CsvProcessor.php';
-
+require_once './models/CsvProcessor.php';
+require_once './DAO/VendaDaoMySQL.php';
+require_once './models/Venda.php';
+require_once './conexao.php';
 
 $arquivo = $_FILES['arquivo'];
 
 $fileProcessor = new CsvProcessor($arquivo);
 $fileProcessor->processarArquivo();
-$dadosProcessados = $fileProcessor->getDadosProcessados();
+$dados = $fileProcessor->getDadosProcessados();
 
-echo '<pre>';
-var_dump($dadosProcessados);
-echo '</pre>';
+foreach ($dados as $valores) {
+    $venda = new Venda();
+
+    $venda->setNfe($valores['nfe']);
+    $venda->setNumVenda($valores['numVenda']);
+    $venda->setComprador($valores['comprador']);
+    $venda->setPrecoVenda($valores['precoVenda']);
+    $venda->setPlataforma($valores['plataforma']);
+    $venda->setDestino($valores['destino']);
+    $venda->setTarifa($valores['tarifa']);
+    $venda->setVendedor($valores['vendedor']);
+    $venda->setData($valores['data']);
+    $venda->setEstado($valores['estado']);
+
+    $vendaDaoMysql = new VendaDaoMySQL($pdo);
+    $vendaDaoMysql->insere($venda);
+}
+
+
+
+// echo '<pre>';
+// var_dump($fileProcessor);
+// echo '</pre>';
 
 
 
 
 // var_dump($arquivo);
-
-// if($arquivo['type']== 'text/csv') {
-
-//     $dadosArquivo = fopen($arquivo['tmp_name'], 'r');
-
-//     $arrLinhas = array();
-
-//     while($linha = fgetcsv( $dadosArquivo, 1000, ',')) {
-
-//         $arrLinhas[] = $linha;
-//     }
-// } else {
-//     echo 'necessario arquivo o formato CSV';
-// }
-
-// // Pega o nome das colunas
-// $header = array_shift($arrLinhas);
-
-// // muda os índices para os nomes das colunas
-// foreach($arrLinhas as &$arr) {
-//     $arr = array_combine($header, $arr);
-// }
-
-
-
 // // echo '<pre>';
 // print_r($arrLinhas);
 // // echo '</pre>';

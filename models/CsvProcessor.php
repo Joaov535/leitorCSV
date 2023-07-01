@@ -22,14 +22,17 @@ class CsvProcessor {
         } else {
             echo 'Necessário arquivo no formato .csv';
         }
+        return $this->arrLinhas;
     }
 
     public function getDadosProcessados() {
         // Remove o primeiro array que contém o nome das colunas
         $header = array_shift($this->arrLinhas);
 
+        $campos = array('nfe', 'numVenda', 'comprador', 'precoVenda', 'plataforma', 'destino', 'tarifa', 'vendedor', 'data', 'estado');
+
         foreach($this->arrLinhas as &$arr) {
-            $arr = array_combine($header, $arr);
+            $arr = array_combine($campos, $arr);
         }
 
         return $this->arrLinhas;

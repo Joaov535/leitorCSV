@@ -1,16 +1,23 @@
-<?php 
+<?php
 
 $dbName = 'dadosExcel';
 $dbUser = 'root';
 $dbPassword = '';
 $dbHost = 'localhost';
 
-$pdo = new PDO('mysql:dbname='.$dbName.';host='.$dbHost, $dbUser, $dbPassword);
+try {
 
-$sql = $pdo->query("SELECT * FROM dados");
+    $pdo = new PDO('mysql:dbname=' . $dbName . ';host=' . $dbHost, $dbUser, $dbPassword);
+} catch (PDOException $e) {
 
-$dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+    echo 'Erro ao conectar com o banco de dados: ' . $e->getMessage();
+}
 
-print_r($dados);
 
-?>
+
+
+// $sql = $pdo->query("SELECT * FROM dados");
+
+// $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+// print_r($dados);
