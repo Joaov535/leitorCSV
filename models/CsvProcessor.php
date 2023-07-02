@@ -1,6 +1,7 @@
-<?php 
+<?php
 
-class CsvProcessor {
+class CsvProcessor
+{
     private $arrLinhas;
     private $arquivo;
 
@@ -10,12 +11,13 @@ class CsvProcessor {
         $this->arrLinhas = array();
     }
 
-    public function processarArquivo() {
-        if($this->arquivo['type']== 'text/csv') {
+    public function processarArquivo()
+    {
+        if ($this->arquivo['type'] == 'text/csv') {
 
             $dadosArquivo = fopen($this->arquivo['tmp_name'], 'r');
 
-            while($linha = fgetcsv( $dadosArquivo, 1000, ',')) {
+            while ($linha = fgetcsv($dadosArquivo, 1000, ',')) {
                 $this->arrLinhas[] = $linha;
             }
             fclose($dadosArquivo);
@@ -25,13 +27,14 @@ class CsvProcessor {
         return $this->arrLinhas;
     }
 
-    public function getDadosProcessados() {
+    public function getDadosProcessados()
+    {
         // Remove o primeiro array que contém o nome das colunas
         $header = array_shift($this->arrLinhas);
 
         $campos = array('nfe', 'numVenda', 'comprador', 'precoVenda', 'plataforma', 'destino', 'tarifa', 'vendedor', 'data', 'estado');
 
-        foreach($this->arrLinhas as &$arr) {
+        foreach ($this->arrLinhas as &$arr) {
             $arr = array_combine($campos, $arr);
         }
 

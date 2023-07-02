@@ -31,6 +31,29 @@ class VendaDaoMySQL implements VendaDAO
 
     public function buscaTodos()
     {
+        $arr = array();
+
+        $sql = $this->pdo->query("SELECT * FROM dados");
+
+        if ($sql->rowCount() > 0) {
+            $data = $sql->fetchAll();
+            foreach($data as $item) {
+                $venda = new Venda;
+                $venda->setNfe($item['nfe']);
+                $venda->setNumVenda($item['numero_venda']);
+                $venda->setComprador($item['comprador']);
+                $venda->setPrecoVenda($item['preco_venda']);
+                $venda->setPlataforma($item['plataforma']);
+                $venda->setDestino($item['destino']);
+                $venda->setTarifa($item['tarifa']);
+                $venda->setVendedor($item['vendedor']);
+                $venda->setData($item['data']);
+                $venda->setEstado($item['estado']);
+
+                $arr[] = $venda;
+            }
+        }
+        return $arr;
     }
     public function buscaPorVenda($nVenda)
     {
